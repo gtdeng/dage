@@ -56,6 +56,7 @@ import {
   userToggleActive,
   userPasswordReset,
   userArrayRequest,
+  addUserToState
 } from 'actions/manageUsers'
 
 // We define mapStateToProps where we'd normally use the @connect
@@ -137,7 +138,7 @@ export class MainView extends React.Component {
       _emailMarkRead: emailId => {
         this.props.dispatch(emailMarkRead(emailId))
       },
-      
+
       _filterArrayFetch: () => {
         this.props.dispatch(filterArrayFetch());
       },
@@ -182,7 +183,21 @@ export class MainView extends React.Component {
       },
       _deleteToken: () =>{
         this.props.dispatch(deleteToken());
-      }
+      },
+
+      _userPasswordReset: username => {
+        this.props.dispatch(userPasswordReset(username));
+      },
+      _addUserToState: data => {
+        this.props.dispatch(addUserToState(data));
+      },
+      _userToggleActive: (username, active) => {
+        this.props.dispatch(userToggleActive(username, active));
+      },
+      _userAdd: data => {
+        this.props.dispatch(userAdd(data));
+      },
+
     };
   }
 
@@ -279,7 +294,7 @@ export class MainView extends React.Component {
 
   dashboardViewRender() {
     return (
-      <Dashboard emails={this.props.emails} 
+      <Dashboard emails={this.props.emails}
                  callbacks = {this.callbacks} />
     );
   }
@@ -295,11 +310,11 @@ export class MainView extends React.Component {
 
   manageUserRender() {
     console.log('manage user triggered');
-    console.log(this.props)
+    console.log(this.props.manageUsers.userState);
     return (
       <div>
-        <h1 style={{'paddingTop': '60px', 'textAlign': 'center'}}>User Accounts</h1>
-        <ManageUsers userArray={this.props.manageUsers.userArray} />
+        <h1 style={{paddingTop: '60px', textAlign: 'center'}}>User Accounts</h1>
+        <ManageUsers userInfo={this.props.manageUsers.userState} callbacks={this.callbacks } userArray={this.props.manageUsers.userArray} />
       </div>
     );
   }
